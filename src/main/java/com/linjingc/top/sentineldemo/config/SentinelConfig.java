@@ -15,7 +15,11 @@ import java.util.List;
  */
 @Configuration
 public class SentinelConfig {
+	/**
+	 * 需要配置执行日志位置 不然会在当前用户下 的logs/csp/文件夹下生成
+	 * spring.cloud.sentinel.log.dir:
 
+	 */
 
 	private static void initFlowQpsRule() {
 		//定义规则 可配置多个规则
@@ -25,7 +29,7 @@ public class SentinelConfig {
 		FlowRule rule1 = new FlowRule("HelloWorld");
 		// set limit qps to 20
 		//2.配置限流数量
-		rule1.setCount(20);
+		rule1.setCount(1);
 		//3.限流策略     QPS OR THREAD
 		rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
 		//4. 受来源限制的应用程序名称 默认 default

@@ -4,3 +4,14 @@ server:
 spring:
   application:
     name: sentinel-demo
+
+  cloud:
+    sentinel:
+      # 日志地址
+      log:
+        dir: classpath:/resources/logs
+      # 控制台地址
+      transport:
+        dashboard: localhost:9080
+      # 开启控制台懒加载
+      eager: false
