@@ -44,6 +44,7 @@ public class HelloController {
 	@RequestMapping("index1")
 	public String index1() {
 		if (SphO.entry("HelloWorld")) {
+
 			return "HelloController.index1 正常访问";
 		} else {
 			return "HelloController.index1 限流中";
@@ -57,6 +58,7 @@ public class HelloController {
 	 * blockHandlerClass：自定义限流逻辑处理类
 	 * fallback: 对应降级方法
 	 * fallbackClass: 相应降级策略
+	 * exceptionsToIgnore：用于指定哪些异常被排除掉，不会计入异常统计中，也不会进入 fallback 逻辑中，而是会原样抛出。
 	 *
 	 * @return
 	 */
