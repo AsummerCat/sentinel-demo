@@ -9,7 +9,7 @@ spring:
     sentinel:
       # 日志地址
       log:
-        dir: classpath:/resources/logs
+        dir: ./src/main/resources/logs
       # 控制台地址
       transport:
         dashboard: localhost:9080
