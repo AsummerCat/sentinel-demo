@@ -1,8 +1,10 @@
 package com.linjingc.top.sentineldemo.config;
 
+import com.alibaba.csp.sentinel.annotation.aspectj.SentinelResourceAspect;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -43,5 +45,10 @@ public class SentinelConfig {
 		System.out.println("初始化限流策略成功");
 	}
 
+
+	@Bean
+	public SentinelResourceAspect sentinelResourceAspect() {
+		return new SentinelResourceAspect();
+	}
 
 }
