@@ -38,6 +38,21 @@ public class SentinelConfig {
 		rules.add(rule1);
 
 
+
+		//1.配置资源名称
+		FlowRule rule2 = new FlowRule("HelloWorld1");
+		// set limit qps to 20
+		//2.配置限流数量
+		rule2.setCount(1);
+		//3.限流策略     QPS OR THREAD
+		rule2.setGrade(RuleConstant.FLOW_GRADE_QPS);
+		//4. 受来源限制的应用程序名称 默认 default
+		rule2.setLimitApp("default");
+		//5.添加到list
+		rules.add(rule2);
+
+
+
 		//6.加载规则
 		FlowRuleManager.loadRules(rules);
 		System.out.println("初始化限流策略成功");

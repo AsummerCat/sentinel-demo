@@ -22,4 +22,4 @@ management:
     web:
       exposure:
         # 暴露所有检查路径
-        include: *
+        include: info

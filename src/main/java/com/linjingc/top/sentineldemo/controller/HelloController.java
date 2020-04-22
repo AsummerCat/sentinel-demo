@@ -1,9 +1,11 @@
 package com.linjingc.top.sentineldemo.controller;
 
+import com.alibaba.csp.sentinel.AsyncEntry;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphO;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.linjingc.top.sentineldemo.mock.HelloControllerMock;
 import lombok.extern.slf4j.Slf4j;
@@ -66,9 +68,9 @@ public class HelloController {
 	 */
 	@RequestMapping("index2")
 	@SentinelResource(value = "HelloWorld",
-			blockHandler="index2",
+			blockHandler = "index2",
 			blockHandlerClass = HelloControllerMock.class,
-			fallback="index2" ,
+			fallback = "index2",
 			fallbackClass = HelloControllerMock.class
 	)
 	public String index2() {
@@ -83,18 +85,19 @@ public class HelloController {
 	 */
 	/**
 	 * 注解限流 @SentinelResource
-     * 直接写在一个类中 对应限流 降级方法
+	 * 直接写在一个类中 对应限流 降级方法
 	 *
 	 * @return
 	 */
 	@RequestMapping("index3")
 	@SentinelResource(value = "HelloWorld",
-			blockHandler="block",
-			fallback="fallback"
+			blockHandler = "block",
+			fallback = "fallback"
 	)
 	public String index3() {
 		return "HelloController.index3 正常访问";
 	}
+
 	/**
 	 * 处理限流或者降级
 	 */
@@ -105,10 +108,35 @@ public class HelloController {
 	public String fallback(BlockException e) {
 		return "限流，或者降级了 fallback";
 	}
-/**
- * **********************************************************************
- * **********************************************************************
- * **********************************************************************
- */
+
+	/**
+	 * **********************************************************************
+	 * **********************************************************************
+	 * **********************************************************************
+	 */
+
+	@RequestMapping("index4")
+	public String index4() {
+
+		try {
+			AsyncEntry entry = SphU.asyncEntry("HelloWorld1");
+			new Thread(() ->
+			{
+				ContextUtil.runOnContext(entry.getAsyncContext(), () -> {
+					System.out.println("异步执行ing....");
+					index3();
+					entry.exit();
+				});
+
+			}
+			).start();
+		} catch (BlockException e) {
+			e.printStackTrace();
+		} finally {
+
+		}
+
+		return "HelloController.index4 正常访问";
+	}
 
 }
