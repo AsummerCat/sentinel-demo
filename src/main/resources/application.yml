@@ -9,9 +9,17 @@ spring:
     sentinel:
       # 日志地址
       log:
-        dir: ./src/main/resources/logs
-      # 控制台地址
+        dir: ./src/main/resources/logs/
+      # 配置sentinel dashboard的访问地址
       transport:
-        dashboard: localhost:9080
+        dashboard: localhost:8080
       # 开启控制台懒加载
       eager: false
+
+# 健康检查
+management:
+  endpoints:
+    web:
+      exposure:
+        # 暴露所有检查路径
+        include: *
