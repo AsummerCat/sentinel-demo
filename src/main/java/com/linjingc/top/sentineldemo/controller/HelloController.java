@@ -95,6 +95,7 @@ public class HelloController {
 			fallback = "fallback"
 	)
 	public String index3() {
+		int a=1/0;
 		return "HelloController.index3 正常访问";
 	}
 
@@ -121,22 +122,38 @@ public class HelloController {
 		try {
 			AsyncEntry entry = SphU.asyncEntry("HelloWorld1");
 			new Thread(() ->
-			{
-				ContextUtil.runOnContext(entry.getAsyncContext(), () -> {
-					System.out.println("异步执行ing....");
-					index3();
-					entry.exit();
-				});
-
-			}
+					ContextUtil.runOnContext(entry.getAsyncContext(), () -> {
+						System.out.println("异步执行ing....");
+						index3();
+						entry.exit();
+					})
 			).start();
 		} catch (BlockException e) {
 			e.printStackTrace();
 		} finally {
 
 		}
-
 		return "HelloController.index4 正常访问";
+	}
+
+
+	/**
+	 * 根据调用者做限流
+	 */
+	@RequestMapping("index5")
+//	@SentinelResource(value = "HelloWorld",
+//			blockHandler = "index2",
+//			blockHandlerClass = HelloControllerMock.class,
+//			fallback = "index2",
+//			fallbackClass = HelloControllerMock.class
+//	)
+	public String index5() {
+		ContextUtil.enter("HelloWorld","caller");
+		if (SphO.entry("HelloWorld")) {
+			return "HelloController.index5 正常访问";
+		} else {
+			return "HelloController.index5 限流中";
+		}
 	}
 
 }
