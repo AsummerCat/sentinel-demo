@@ -1,5 +1,6 @@
 package com.linjingc.top.sentineldemo.config;
 
+import com.alibaba.csp.sentinel.annotation.aspectj.SentinelResourceAspect;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRuleManager;
@@ -9,6 +10,7 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.csp.sentinel.slots.system.SystemRule;
 import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +26,14 @@ import java.util.List;
 @Configuration
 public class SentinelConfig {
 
+	/**
+	 * 若您的应用使用了 Spring AOP（无论是 Spring Boot 还是传统 Spring 应用），您需要通过配置的方式将 SentinelResourceAspect 注册为一个 Spring Bean：
+	 * @return
+	 */
+	@Bean
+	public SentinelResourceAspect sentinelResourceAspect() {
+		return new SentinelResourceAspect();
+	}
 
 	/**
 	 * 需要配置执行日志位置 不然会在当前用户下 的logs/csp/文件夹下生成
